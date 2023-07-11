@@ -1,36 +1,42 @@
-var Set = function() {
-  var set = Object.create(setPrototype);
-  set._storage = []; // fix me
-  return set;
+var Tree = function(value) {
+  var newTree = {};
+  newTree.value = value;
+
+  // your code here
+  newTree.children = [];
+  extend(newTree, treeMethods);
+
+  return newTree;
 };
 
-var setPrototype = {};
-
-setPrototype.add = function(item) {
-  for (var i = 0; i < this._storage.length; i++) {
-    if (this._storage[i] === item) {
-      return;
-    }
+var extend = function(to, from) {
+  for (var key in from) {
+    to[key] = from[key];
   }
-  this._storage.push(item);
 };
 
-setPrototype.contains = function(item) {
-  for (var i = 0; i < this._storage.length; i++) {
-    if (this._storage[i] === item) {
-      return true;
+var treeMethods = {};
+
+treeMethods.addChild = function(value) {
+  var newChild = Tree(value);
+  this.children.push(newChild);
+
+};
+
+treeMethods.contains = function(target) {
+  if (this.value === target) {
+    return true;
+  } else {
+    for (var i = 0; i < this.children.length;i++) {
+      var found = this.children[i].contains(target);
+      if (found) {
+        return true;
+      }
     }
   }
   return false;
 };
 
-setPrototype.remove = function(item) {
-  for (var i = 0; i < this._storage.length; i++) {
-    if (this._storage[i] === item) {
-      this._storage.splice(i, 1);
-    }
-  }
-};
 
 /*
  * Complexity: What is the time complexity of the above functions?
